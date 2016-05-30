@@ -1,0 +1,97 @@
+CREATE DATABASE IF NOT EXISTS ad;
+USE ad;
+
+CREATE TABLE Items
+(
+itemID INT PRIMARY KEY,
+name VARCHAR(256) NOT NULL,
+currently DECIMAL(8,2) NOT NULL,
+buyPrice DECIMAL(8,2) NOT NULL,
+firstBid DECIMAL(8,2) NOT NULL,
+numberOfBids INT NOT NULL,
+location VARCHAR(256) NOT NULL,
+country VARCHAR(256) NOT NULL,
+started TIMESTAMP NOT NULL,
+ends TIMESTAMP NOT NULL,
+description VARCHAR(4000)
+);
+
+CREATE TABLE Categories
+(
+categoryID INT PRIMARY KEY,
+category VARCHAR(256) NOT NULL
+);
+
+CREATE TABLE ItemHasCategory
+(
+itemID INT NOT NULL,
+categoryID INT NOT NULL,
+PRIMARY KEY (itemID,categoryID),
+FOREIGN KEY (itemID) REFERENCES Items(itemID),
+FOREIGN KEY (categoryID) REFERENCES Categories(categoryID)
+);
+
+CREATE TABLE Sellers
+(
+userID VARCHAR(256) PRIMARY KEY,
+rating INT NOT NULL
+);
+
+CREATE TABLE ItemHasSeller
+(
+itemID INT NOT NULL,
+userID VARCHAR(256) NOT NULL,
+PRIMARY KEY (itemID,userID),
+FOREIGN KEY (itemID) REFERENCES Items(itemID),
+FOREIGN KEY (userID) REFERENCES Sellers(userID)
+);
+
+CREATE TABLE Bidders
+(
+userID VARCHAR(256) PRIMARY KEY,
+rating INT NOT NULL,
+location VARCHAR(256),
+country VARCHAR(256)
+);
+
+CREATE TABLE Bids 
+(
+bidID INT PRIMARY KEY,
+time TIMESTAMP NOT NULL,
+amount DECIMAL(8,2) NOT NULL,
+bidderID VARCHAR(256) NOT NULL,
+FOREIGN KEY (bidderID) REFERENCES Bidders(userID)
+);
+
+CREATE TABLE ItemHasBid
+(
+itemID INT NOT NULL,
+bidID INT NOT NULL,
+PRIMARY KEY (itemID,bidID),
+FOREIGN KEY (itemID) REFERENCES Items(itemID),
+FOREIGN KEY (bidID) REFERENCES Bids(bidID)
+);
+
+
+CREATE TABLE Coordinates
+(
+coordinateID INT PRIMARY KEY,
+latitude VARCHAR(256),
+longitude VARCHAR(256)
+);
+
+CREATE TABLE ItemHasCoordinate
+(
+itemID INT NOT NULL,
+coordinateID INT NOT NULL,
+PRIMARY KEY (itemID,coordinateID),
+FOREIGN KEY (itemID) REFERENCES Items(itemID),
+FOREIGN KEY (coordinateID) REFERENCES Coordinates(coordinateID)
+);
+
+
+
+
+
+
+
